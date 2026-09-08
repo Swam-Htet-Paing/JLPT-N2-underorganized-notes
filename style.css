@@ -1,0 +1,129 @@
+:root {
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #2563eb;
+  --star-bg: #fffbeb;
+  --star-border: #fef3c7;
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* Header & Dropdown UI */
+.app-header {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0.8rem 1rem;
+}
+
+.header-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.selector-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+select {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+}
+
+select:focus {
+  border-color: var(--primary);
+}
+
+/* Layout */
+.container {
+  max-width: 800px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 2px solid var(--bg);
+  padding-bottom: 0.5rem;
+}
+
+/* Note Blocks */
+.note-block {
+  padding: 0.9rem;
+  margin-bottom: 0.9rem;
+  border-left: 3px solid var(--primary);
+  background: #f8fafc;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.star-block {
+  border-left: 3px solid #d97706;
+  background: var(--star-bg);
+}
+
+.star-prompt {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.star-choice {
+  display: inline-block;
+  margin-right: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.star-answer {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #166534;
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.9rem;
+}
