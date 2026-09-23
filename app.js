@@ -9,70 +9,86 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. Furigana Toggle Initialization
   updateFuriganaUI();
 
-  toggleBtn.addEventListener("click", () => {
-    isFuriganaVisible = !isFuriganaVisible;
-    updateFuriganaUI();
-  });
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      isFuriganaVisible = !isFuriganaVisible;
+      updateFuriganaUI();
+    });
+  }
 
   function updateFuriganaUI() {
     if (isFuriganaVisible) {
       document.body.classList.remove("hide-furigana");
-      toggleBtn.classList.add("active");
-      toggleBtn.textContent = "Furigana: ON";
+      if (toggleBtn) {
+        toggleBtn.classList.add("active");
+        toggleBtn.textContent = "Furigana: ON";
+      }
     } else {
       document.body.classList.add("hide-furigana");
-      toggleBtn.classList.remove("active");
-      toggleBtn.textContent = "Furigana: OFF";
+      if (toggleBtn) {
+        toggleBtn.classList.remove("active");
+        toggleBtn.textContent = "Furigana: OFF";
+      }
     }
   }
 
-  // 2. Load File List from index.json & Populate Dropdown
+  // 2. Load File List from index.json
   async function initFileList() {
     try {
       const response = await fetch("./notes/index.json");
       if (!response.ok) throw new Error("Index file not found");
       const files = await response.json();
 
-      selectElement.innerHTML = "";
-      files.forEach(file => {
-        const option = document.createElement("option");
-        option.value = file.filename;
-        option.textContent = file.title || file.filename;
-        selectElement.appendChild(option);
-      });
+      if (selectElement) {
+        selectElement.innerHTML = "";
+        files.forEach(file => {
+          const option = document.createElement("option");
+          option.value = file.filename;
+          option.textContent = file.title || file.filename;
+          selectElement.appendChild(option);
+        });
+      }
 
       if (files.length > 0) {
         loadNoteFile(files[0].filename);
       }
     } catch (err) {
-      titleElement.textContent = "Error Loading Index";
-      container.innerHTML = `<p class="error-msg">Could not load <code>notes/index.json</code>.</p>`;
+      console.error("Index Load Error:", err);
+      if (titleElement) titleElement.textContent = "Error Loading Index";
+      if (container) {
+        container.innerHTML = `<p class="error-msg">Could not load <code>notes/index.json</code>.</p>`;
+      }
     }
   }
 
-  selectElement.addEventListener("change", (e) => {
-    loadNoteFile(e.target.value);
-  });
+  if (selectElement) {
+    selectElement.addEventListener("change", (e) => {
+      loadNoteFile(e.target.value);
+    });
+  }
 
   // 3. Load & Render Selected Note File
   async function loadNoteFile(fileName) {
-    titleElement.textContent = `Loading ${fileName}...`;
-    container.innerHTML = "";
+    if (titleElement) titleElement.textContent = `Loading ${fileName}...`;
+    if (container) container.innerHTML = "";
 
     try {
       const response = await fetch(`./notes/${fileName}`);
       if (!response.ok) throw new Error("File not found");
 
       const rawText = await response.text();
-      titleElement.textContent = fileName.replace(".txt", "");
+      if (titleElement) titleElement.textContent = fileName.replace(".txt", "");
       renderNotes(rawText);
     } catch (err) {
-      titleElement.textContent = "Error Loading File";
-      container.innerHTML = `<p class="error-msg">Could not load <code>notes/${fileName}</code>.</p>`;
+      console.error("File Load Error:", err);
+      if (titleElement) titleElement.textContent = "Error Loading File";
+      if (container) {
+        container.innerHTML = `<p class="error-msg">Could not load <code>notes/${fileName}</code>.</p>`;
+      }
     }
   }
 
-  // 4. Render Content with Furigana Parser
+  // 4. Render Content
   function renderNotes(rawText) {
     const blocks = rawText.trim().split(/\n\s*\n/);
 
@@ -84,29 +100,32 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.add("star-block");
         card.innerHTML = formatStarExercise(block);
       } else {
-        const lines = block.split("\n").map(line => {
-          let parsedLine = escapeHTML(line).replace(/ /g, "&nbsp;");
-          parsedLine = parseFurigana(parsedLine); // Properly parses [漢字|ふりがな] to <ruby>
-          return parsedLine;
-        });
+        const lines = block.split("\n").map(line => processLine(line));
         card.innerHTML = lines.join("<br>");
       }
 
-      container.appendChild(card);
+      if (container) container.appendChild(card);
     });
   }
 
-  // FIXED: Corrected Pipe Regex from \Vert{} to \|
+  // Unified Line Processor
+  function processLine(str) {
+    let clean = escapeHTML(str);
+    clean = parseFurigana(clean);
+    clean = clean.replace(/ /g, "&nbsp;");
+    return clean;
+  }
+
+  // Regular expression to accurately convert [Kanji|Furigana] to <ruby>
   function parseFurigana(text) {
-    return text.replace(/\[([^\vert{}]+)\Vert{}([^\]]+)\]/g, "<ruby>$1<rt>$2</rt></ruby>");
+    return text.replace(/\[([^\vert{}\]]+)\|([^\]]+)\]/g, "<ruby>$1<rt>$2</rt></ruby>");
   }
 
   function formatStarExercise(block) {
     const lines = block.split("\n");
     let html = `<div class="star-content">`;
     lines.forEach(line => {
-      let parsedLine = escapeHTML(line);
-      parsedLine = parseFurigana(parsedLine);
+      const parsedLine = processLine(line);
 
       if (line.includes("★")) {
         html += `<p class="star-prompt">${parsedLine}</p>`;
@@ -123,10 +142,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g,
-      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-    );
+    return str.replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag));
   }
 
+  // Initialize
   initFileList();
 });

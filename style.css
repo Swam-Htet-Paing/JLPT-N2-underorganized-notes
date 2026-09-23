@@ -25,9 +25,10 @@ body {
   background-color: var(--bg);
   color: var(--text-main);
   line-height: 1.6;
+  overflow-x: hidden; /* Prevents horizontal scrollbars on smaller viewports */
 }
 
-/* Header & Dropdown UI */
+/* Header & Navigation */
 .app-header {
   background: var(--card-bg);
   border-bottom: 1px solid var(--border);
@@ -43,12 +44,23 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* Allows wrap on smaller screens */
+  gap: 0.75rem;
 }
 
 .header-container h1 {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* Controls Wrapper (Toggle & Dropdown) */
+.controls-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .selector-wrapper {
@@ -57,6 +69,7 @@ body {
   gap: 0.5rem;
   font-size: 0.9rem;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 select {
@@ -68,10 +81,29 @@ select {
   font-size: 0.9rem;
   cursor: pointer;
   outline: none;
+  max-width: 100%;
 }
 
 select:focus {
   border-color: var(--primary);
+}
+
+.btn-toggle {
+  padding: 6px 12px;
+  background-color: #334155;
+  color: #fff;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.btn-toggle.active {
+  background-color: #2563eb;
+  border-color: #3b82f6;
 }
 
 /* Main Layout */
@@ -95,6 +127,7 @@ select:focus {
   border-bottom: 2px solid var(--border);
   padding-bottom: 0.5rem;
   color: var(--primary);
+  word-break: break-word;
 }
 
 /* Note Blocks */
@@ -143,29 +176,6 @@ select:focus {
   font-size: 0.9rem;
 }
 
-/* --- Header Controls Layout --- */
-.controls-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.btn-toggle {
-  padding: 6px 12px;
-  background-color: #334155;
-  color: #fff;
-  border: 1px solid #475569;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
-}
-
-.btn-toggle.active {
-  background-color: #2563eb;
-  border-color: #3b82f6;
-}
-
 /* --- Ruby/Furigana Styles --- */
 ruby {
   ruby-align: center;
@@ -179,4 +189,48 @@ rt {
 /* Hide Furigana globally when class is applied */
 body.hide-furigana rt {
   display: none;
+}
+
+/* --- Responsive Layout for Small Screens / Mobile --- */
+@media (max-width: 640px) {
+  .header-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+
+  .header-container h1 {
+    text-align: center;
+    font-size: 1.1rem;
+    white-space: normal;
+  }
+
+  .controls-wrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .selector-wrapper {
+    flex: 1;
+    min-width: 0; /* Prevents overflow inside flex containers */
+  }
+
+  select {
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+
+  .container {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .note-block {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
 }
