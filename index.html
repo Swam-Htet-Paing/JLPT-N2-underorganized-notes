@@ -8,18 +8,18 @@
 </head>
 <body>
 
-  <!-- TOP HEADER WITH DROPDOWN -->
+  <!-- TOP HEADER WITH DROPDOWN & TOGGLE -->
   <header class="app-header">
     <div class="header-container">
       <h1>JLPT Note Viewer</h1>
-      <div class="selector-wrapper">
-        <label for="note-select">Select Exam:</label>
-        <select id="note-select">
-          <option value="2024DecN2.txt">2024 December N2</option>
-          <option value="2024DecN2Dokkai.txt">2024 December N2 Dokkai</option>
-          <option value="2025JulyN2.txt">2025 July N2</option>
-          <option value="2025JulyN2Dokkai.txt">2025 July N2 Dokkai</option>
-        </select>
+      <div class="controls-wrapper">
+        <button id="furigana-toggle" class="btn-toggle">Furigana: OFF</button>
+        <div class="selector-wrapper">
+          <label for="note-select">Select Exam:</label>
+          <select id="note-select">
+            <!-- Dynamically populated by JS -->
+          </select>
+        </div>
       </div>
     </div>
   </header>
