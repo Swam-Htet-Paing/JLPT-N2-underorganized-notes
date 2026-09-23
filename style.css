@@ -142,3 +142,41 @@ select:focus {
   color: #f87171;
   font-size: 0.9rem;
 }
+
+/* --- Header Controls Layout --- */
+.controls-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-toggle {
+  padding: 6px 12px;
+  background-color: #334155;
+  color: #fff;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.btn-toggle.active {
+  background-color: #2563eb;
+  border-color: #3b82f6;
+}
+
+/* --- Ruby/Furigana Styles --- */
+ruby {
+  ruby-align: center;
+}
+
+rt {
+  font-size: 0.65em;
+  color: #94a3b8;
+}
+
+/* Hide Furigana globally when class is applied */
+body.hide-furigana rt {
+  display: none;
+}
