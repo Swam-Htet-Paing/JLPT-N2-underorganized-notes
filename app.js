@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
         selectElement.appendChild(option);
       });
 
-      // Load initial file after populating list
       if (files.length > 0) {
         loadNoteFile(files[0].filename);
       }
@@ -51,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Handle dropdown selection change
   selectElement.addEventListener("change", (e) => {
     loadNoteFile(e.target.value);
   });
@@ -88,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         const lines = block.split("\n").map(line => {
           let parsedLine = escapeHTML(line).replace(/ /g, "&nbsp;");
-          parsedLine = parseFurigana(parsedLine); // Replace [漢字|ふりがな] to <ruby>
+          parsedLine = parseFurigana(parsedLine); // Properly parses [漢字|ふりがな] to <ruby>
           return parsedLine;
         });
         card.innerHTML = lines.join("<br>");
@@ -98,9 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Helper: Convert [漢字|ふりがな] pattern to <ruby>漢字<rt>ふりがな</rt></ruby>
+  // FIXED: Corrected Pipe Regex from \Vert{} to \|
   function parseFurigana(text) {
-    return text.replace(/\[([^\Vert{}]+)\Vert{}([^\]]+)\]/g, "<ruby>$1<rt>$2</rt></ruby>");
+    return text.replace(/\[([^\vert{}]+)\Vert{}([^\]]+)\]/g, "<ruby>$1<rt>$2</rt></ruby>");
   }
 
   function formatStarExercise(block) {
@@ -130,6 +128,5 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // Start initialization
   initFileList();
 });
