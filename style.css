@@ -25,7 +25,7 @@ body {
   background-color: var(--bg);
   color: var(--text-main);
   line-height: 1.6;
-  overflow-x: hidden; /* Prevents horizontal scrollbars on smaller viewports */
+  overflow-x: hidden;
 }
 
 /* Header & Navigation */
@@ -44,7 +44,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* Allows wrap on smaller screens */
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
@@ -55,7 +55,7 @@ body {
   white-space: nowrap;
 }
 
-/* Controls Wrapper (Toggle & Dropdown) */
+/* Controls Wrapper */
 .controls-wrapper {
   display: flex;
   align-items: center;
@@ -137,7 +137,7 @@ select:focus {
   border-left: 3px solid var(--primary);
   background: var(--block-bg);
   border-radius: 0 6px 6px 0;
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   word-break: break-word;
   color: var(--text-main);
 }
@@ -171,6 +171,32 @@ select:focus {
   display: inline-block;
 }
 
+/* --- Audio Player Styling --- */
+.audio-player-wrapper {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.audio-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.audio-label code {
+  color: var(--primary);
+}
+
+audio {
+  width: 100%;
+  height: 36px;
+  border-radius: 6px;
+  outline: none;
+}
+
 .error-msg {
   color: #f87171;
   font-size: 0.9rem;
@@ -182,16 +208,15 @@ ruby {
 }
 
 rt {
-  font-size: 0.65em;
-  color: #94a3b8;
+  font-size: 0.73em;
+  color: #5aeef9;
 }
 
-/* Hide Furigana globally when class is applied */
 body.hide-furigana rt {
   display: none;
 }
 
-/* --- Responsive Layout for Small Screens / Mobile --- */
+/* --- Responsive Mobile Layout --- */
 @media (max-width: 640px) {
   .header-container {
     flex-direction: column;
@@ -212,7 +237,7 @@ body.hide-furigana rt {
 
   .selector-wrapper {
     flex: 1;
-    min-width: 0; /* Prevents overflow inside flex containers */
+    min-width: 0;
   }
 
   select {
@@ -231,6 +256,6 @@ body.hide-furigana rt {
 
   .note-block {
     padding: 0.75rem;
-    font-size: 0.9rem;
+    font-size: 1.15rem;
   }
 }

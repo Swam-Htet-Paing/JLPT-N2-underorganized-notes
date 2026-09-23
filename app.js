@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 4. Render Content
+  // 4. Render Content Blocks
   function renderNotes(rawText) {
     const blocks = rawText.trim().split(/\n\s*\n/);
 
@@ -96,12 +96,38 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "note-block";
 
-      if (block.includes("★")) {
+      // Detect audio annotation (e.g., (File123.wav) or (AB.wav))
+      const audioMatch = block.match(/^\s*\(([^()\r\n]+\.(?:wav|mp3))\)\s*$/im);
+
+      let audioFilename = null;
+      let cleanedBlock = block;
+
+      if (audioMatch) {
+        audioFilename = audioMatch[1];
+        cleanedBlock = block.replace(audioMatch[0], "").trim();
+      }
+
+      // Render Block Content
+      if (cleanedBlock.includes("★")) {
         card.classList.add("star-block");
-        card.innerHTML = formatStarExercise(block);
+        card.innerHTML = formatStarExercise(cleanedBlock);
       } else {
-        const lines = block.split("\n").map(line => processLine(line));
+        const lines = cleanedBlock.split("\n").map(line => processLine(line));
         card.innerHTML = lines.join("<br>");
+      }
+
+      // Append Audio Player if an audio file was specified
+      if (audioFilename) {
+        const audioWrapper = document.createElement("div");
+        audioWrapper.className = "audio-player-wrapper";
+
+        audioWrapper.innerHTML = `
+          <span class="audio-label">🎧 Audio: <code>${audioFilename}</code></span>
+          <audio controls preload="metadata" src="./audio/${audioFilename}">
+            Your browser does not support the audio element.
+          </audio>
+        `;
+        card.appendChild(audioWrapper);
       }
 
       if (container) container.appendChild(card);
@@ -116,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return clean;
   }
 
-  // Regular expression to accurately convert [Kanji|Furigana] to <ruby>
+  // Converts [Kanji|Furigana] to <ruby>
   function parseFurigana(text) {
     return text.replace(/\[([^\vert{}\]]+)\|([^\]]+)\]/g, "<ruby>$1<rt>$2</rt></ruby>");
   }

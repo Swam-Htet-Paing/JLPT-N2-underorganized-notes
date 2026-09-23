@@ -7,8 +7,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- TOP HEADER WITH DROPDOWN & TOGGLE -->
   <header class="app-header">
     <div class="header-container">
       <h1>JLPT Note Viewer</h1>
@@ -16,20 +14,17 @@
         <button id="furigana-toggle" class="btn-toggle">Furigana: OFF</button>
         <div class="selector-wrapper">
           <label for="note-select">Select Exam:</label>
-          <select id="note-select">
-            <!-- Dynamically populated by JS -->
-          </select>
+          <select id="note-select"></select>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- DYNAMIC CONTENT CONTAINER -->
   <main class="container">
-    <section class="card">
+    <div class="card">
       <h2 id="file-title">Loading...</h2>
-      <div id="notes-container" class="notes-list"></div>
-    </section>
+      <div id="notes-container"></div>
+    </div>
   </main>
 
   <script src="app.js"></script>
